@@ -1,5 +1,8 @@
 # 🇳🇵 Smart NID Nepal — स्मार्ट दर्ता
 
+> 🚧 **Work in Progress / Under Construction** 🚧  
+> *This project is currently under active development. Features, UI, and APIs are subject to change.*
+
 **Smart NID Nepal** is an AI-powered National ID (NID) pre-enrollment assistant designed to streamline the complex citizenship registration process in Nepal. 
 
 By leveraging the cutting-edge Google Gemini Vision API, this application completely automates data entry. Users simply upload a photo of their physical Nepali Citizenship Certificate (नागरिकता प्रमाणपत्र), and the AI instantly reads, translates, and extracts all the necessary fields (both in Nepali and English) to pre-fill the official NID enrollment form.
