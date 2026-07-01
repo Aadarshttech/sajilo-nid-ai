@@ -24,6 +24,7 @@ export default function UploadPage() {
 
   const [frontFile, setFrontFile] = useState<File | null>(null);
   const [backFile, setBackFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleFrontSelected = useCallback(
     (file: File) => {
@@ -48,6 +49,7 @@ export default function UploadPage() {
   const handleExtract = useCallback(async () => {
     if (!frontFile || !backFile) return;
 
+    setLoading(true);
     setIsExtracting(true);
     setExtractionError(null);
 
@@ -75,6 +77,7 @@ export default function UploadPage() {
           : "An unexpected error occurred. Please try again.";
       setExtractionError(message);
     } finally {
+      setLoading(false);
       setIsExtracting(false);
     }
   }, [frontFile, backFile, setExtractedData, setIsExtracting, setExtractionError]);
@@ -95,7 +98,7 @@ export default function UploadPage() {
           currentStep, extractionError, or any other conditional.
           This guarantees it is always visible when isExtracting is true.
          ══════════════════════════════════════════════════════ */}
-      {isExtracting && (
+      {loading && (
         <div
           className="extraction-overlay"
           style={{
@@ -243,11 +246,11 @@ export default function UploadPage() {
             <div className="upload-action">
               <button
                 className="btn btn--primary btn--lg"
-                disabled={!canExtract || isExtracting}
+                disabled={!canExtract || loading}
                 onClick={handleExtract}
                 style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', minWidth: '280px' }}
               >
-                {isExtracting ? (
+                {loading ? (
                   <>
                     <div style={{
                       width: '24px', height: '24px', border: '3px solid rgba(255,255,255,0.3)', borderTopColor: 'white', borderRadius: '50%', animation: 'spin 1s linear infinite'
