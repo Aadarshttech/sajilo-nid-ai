@@ -52,6 +52,8 @@ export default function UploadPage() {
     setExtractionError(null);
 
     try {
+      const startTime = Date.now();
+      
       const formData = new FormData();
       formData.append("front", frontFile);
       formData.append("back", backFile);
@@ -65,6 +67,12 @@ export default function UploadPage() {
 
       if (!response.ok || !result.success || !result.data) {
         throw new Error(result.error || "Failed to extract data from the images");
+      }
+
+      // Ensure the loading state is visible for at least 2 seconds for smooth UX
+      const elapsed = Date.now() - startTime;
+      if (elapsed < 2000) {
+        await new Promise(resolve => setTimeout(resolve, 2000 - elapsed));
       }
 
       setExtractedData(result.data);
