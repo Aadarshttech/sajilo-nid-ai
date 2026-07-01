@@ -23,24 +23,28 @@ function isSupportedMimeType(mime: string): mime is SupportedMimeType {
 }
 
 /**
- * Extract citizenship certificate data from an image using Gemini Vision
+ * Extract citizenship certificate data from images using Gemini Vision
  *
- * @param imageBuffer - Raw image buffer (JPEG/PNG/WEBP)
- * @param mimeType - MIME type of the image
+ * @param frontBuffer - Raw image buffer of front side
+ * @param frontMimeType - MIME type of front image
+ * @param backBuffer - Raw image buffer of back side
+ * @param backMimeType - MIME type of back image
  * @returns Parsed ExtractionResult
  */
 export async function extractCitizenship(
-  imageBuffer: Buffer,
-  mimeType: string
+  frontBuffer: Buffer,
+  frontMimeType: string,
+  backBuffer: Buffer,
+  backMimeType: string
 ): Promise<ExtractionResult> {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     throw new Error("GEMINI_API_KEY is not configured");
   }
 
-  if (!isSupportedMimeType(mimeType)) {
+  if (!isSupportedMimeType(frontMimeType) || !isSupportedMimeType(backMimeType)) {
     throw new Error(
-      `Unsupported image type: ${mimeType}. Supported: ${SUPPORTED_MIME_TYPES.join(", ")}`
+      `Unsupported image type. Supported: ${SUPPORTED_MIME_TYPES.join(", ")}`
     );
   }
 
@@ -48,19 +52,26 @@ export async function extractCitizenship(
   const model = genAI.getGenerativeModel({
     model: "gemini-2.5-flash",
     generationConfig: {
-      temperature: 0.1,   // Low temperature for accurate OCR
-      maxOutputTokens: 2048,
+      temperature: 0.1,
+      responseMimeType: "application/json",
     },
   });
 
-  const base64Image = imageBuffer.toString("base64");
+  const frontBase64 = frontBuffer.toString("base64");
+  const backBase64 = backBuffer.toString("base64");
 
   const result = await model.generateContent([
     EXTRACT_CITIZENSHIP_PROMPT,
     {
       inlineData: {
-        mimeType: mimeType,
-        data: base64Image,
+        mimeType: frontMimeType,
+        data: frontBase64,
+      },
+    },
+    {
+      inlineData: {
+        mimeType: backMimeType,
+        data: backBase64,
       },
     },
   ]);

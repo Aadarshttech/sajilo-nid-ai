@@ -35,13 +35,20 @@ const upload = multer({
 
 router.post(
   "/extract",
-  upload.single("citizenship"),
+  upload.fields([
+    { name: "front", maxCount: 1 },
+    { name: "back", maxCount: 1 },
+  ]),
   async (req: Request, res: Response): Promise<void> => {
     try {
-      if (!req.file) {
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      const frontFile = files?.["front"]?.[0];
+      const backFile = files?.["back"]?.[0];
+
+      if (!frontFile || !backFile) {
         const response: ExtractResponse = {
           success: false,
-          error: "No image file provided. Upload a citizenship certificate image.",
+          error: "Both front and back images of the citizenship certificate are required.",
         };
         res.status(400).json(response);
         return;
@@ -49,12 +56,14 @@ router.post(
 
       // Log only non-PII metadata
       console.log(
-        `[extract] Processing image: ${req.file.originalname} (${(req.file.size / 1024).toFixed(1)} KB, ${req.file.mimetype})`
+        `[extract] Processing images: Front (${(frontFile.size / 1024).toFixed(1)} KB), Back (${(backFile.size / 1024).toFixed(1)} KB)`
       );
 
       const result = await extractCitizenship(
-        req.file.buffer,
-        req.file.mimetype
+        frontFile.buffer,
+        frontFile.mimetype,
+        backFile.buffer,
+        backFile.mimetype
       );
 
       // Warn if confidence is very low

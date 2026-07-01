@@ -3,12 +3,14 @@ import { useCallback, useState, useRef } from "react";
 interface DropZoneProps {
   onFileSelected: (file: File) => void;
   disabled?: boolean;
+  title?: string;
+  subtitle?: string;
 }
 
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const MAX_SIZE = 10 * 1024 * 1024; // 10 MB
 
-export default function DropZone({ onFileSelected, disabled }: DropZoneProps) {
+export default function DropZone({ onFileSelected, disabled, title, subtitle }: DropZoneProps) {
   const [isDragOver, setIsDragOver] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -110,10 +112,10 @@ export default function DropZone({ onFileSelected, disabled }: DropZoneProps) {
           <p className="dropzone__title">
             {isDragOver
               ? "Drop your image here"
-              : "Upload Citizenship Certificate"}
+              : title || "Upload Citizenship Certificate"}
           </p>
           <p className="dropzone__subtitle">
-            नागरिकता प्रमाणपत्रको फोटो अपलोड गर्नुहोस्
+            {subtitle || "नागरिकता प्रमाणपत्रको फोटो अपलोड गर्नुहोस्"}
           </p>
           <p className="dropzone__hint">
             Drag & drop or click to browse · JPEG, PNG, WEBP · Max 10 MB

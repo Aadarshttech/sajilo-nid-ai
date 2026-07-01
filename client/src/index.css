@@ -1396,6 +1396,54 @@ details[open] > .form-sidebar__summary::before {
   margin-bottom: 1.5rem;
 }
 
+/* ── Dual Upload Layout ──────────────────────────────────── */
+.upload-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.upload-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.upload-preview-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: white;
+  padding: 1rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+}
+
+.upload-preview-img {
+  width: 100%;
+  border-radius: var(--radius-md);
+  object-fit: contain;
+  max-height: 250px;
+}
+
+.btn--full {
+  width: 100%;
+}
+
+.upload-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.upload-action__hint {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 900px) {
   .form-wizard-layout {
@@ -1417,6 +1465,10 @@ details[open] > .form-sidebar__summary::before {
 }
 
 @media (max-width: 640px) {
+  .upload-grid {
+    grid-template-columns: 1fr;
+  }
+
   .upload-header__title--np {
     font-size: 2.25rem;
   }

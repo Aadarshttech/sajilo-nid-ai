@@ -5,7 +5,7 @@
  * citizenship certificate image and return only valid JSON.
  */
 
-export const EXTRACT_CITIZENSHIP_PROMPT = `You are an OCR specialist for Nepali government documents. The user has uploaded a photo of a Nepali Citizenship Certificate (नागरिकता प्रमाणपत्र). Extract every visible field.
+export const EXTRACT_CITIZENSHIP_PROMPT = `You are an OCR specialist for Nepali government documents. The user has uploaded TWO photos of a Nepali Citizenship Certificate (नागरिकता प्रमाणपत्र) — the front side (Nepali) and the back side (English). Extract every visible field.
 
 Rules:
 - The document may be entirely in Devanagari or bilingual (Devanagari + English).

@@ -31,8 +31,9 @@ interface EnrollmentState {
   isExtracting: boolean;
   extractionError: string | null;
 
-  /** The uploaded image as a data URL for preview */
-  imagePreview: string | null;
+  /** The uploaded images as data URLs for preview */
+  frontPreview: string | null;
+  backPreview: string | null;
 
   /** Timestamp when user reviewed extraction (Phase 3) */
   reviewedAt: string | null;
@@ -41,7 +42,8 @@ interface EnrollmentState {
   setExtractedData: (data: ExtractionResult) => void;
   setIsExtracting: (value: boolean) => void;
   setExtractionError: (error: string | null) => void;
-  setImagePreview: (url: string | null) => void;
+  setFrontPreview: (url: string | null) => void;
+  setBackPreview: (url: string | null) => void;
   updateDraftField: <K extends keyof ExtractionResult>(
     field: K,
     value: ExtractionResult[K]
@@ -60,7 +62,8 @@ const initialState = {
   appointmentPreferences: null,
   isExtracting: false,
   extractionError: null,
-  imagePreview: null,
+  frontPreview: null,
+  backPreview: null,
   reviewedAt: null,
 };
 
@@ -81,8 +84,11 @@ export const useEnrollmentStore = create<EnrollmentState>((set) => ({
   setExtractionError: (error) =>
     set({ extractionError: error, isExtracting: false }),
 
-  setImagePreview: (url) =>
-    set({ imagePreview: url }),
+  setFrontPreview: (url) =>
+    set({ frontPreview: url }),
+
+  setBackPreview: (url) =>
+    set({ backPreview: url }),
 
   updateDraftField: (field, value) =>
     set((state) => {
