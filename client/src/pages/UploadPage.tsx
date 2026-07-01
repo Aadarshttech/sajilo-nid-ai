@@ -174,8 +174,19 @@ export default function UploadPage() {
               >
                 {isExtracting ? "Extracting... Please wait" : "Extract Data with AI ✨"}
               </button>
-              {!canExtract && (
+              {!canExtract && !isExtracting && (
                 <p className="upload-action__hint">Please upload both sides to continue.</p>
+              )}
+              {isExtracting && (
+                <div className="loading-status" style={{ marginTop: '2rem', width: '100%' }}>
+                  <div className="loading-spinner" />
+                  <p className="loading-status__text">
+                    📄 Reading your citizenship certificate…
+                  </p>
+                  <p className="loading-status__subtext">
+                    नागरिकता प्रमाणपत्र पढ्दै…
+                  </p>
+                </div>
               )}
             </div>
           </div>
