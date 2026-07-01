@@ -51,9 +51,21 @@ export default function UploadPage() {
     setIsExtracting(true);
     setExtractionError(null);
 
+    const startTime = Date.now();
+    
+    // Helper to ensure minimum loading time is met before resolving or rejecting
+    const ensureDelay = async () => {
+      const elapsed = Date.now() - startTime;
+      if (elapsed < 1500) {
+        await new Promise(resolve => setTimeout(resolve, 1500 - elapsed));
+      }
+    };
+
     try {
-      const startTime = Date.now();
-      
+      // Small delay to allow React to flush the 'isExtracting: true' state to the DOM
+      // and let the browser paint the loading spinner before we block the thread or instantly fail
+      await new Promise(resolve => setTimeout(resolve, 50));
+
       const formData = new FormData();
       formData.append("front", frontFile);
       formData.append("back", backFile);
@@ -69,14 +81,10 @@ export default function UploadPage() {
         throw new Error(result.error || "Failed to extract data from the images");
       }
 
-      // Ensure the loading state is visible for at least 2 seconds for smooth UX
-      const elapsed = Date.now() - startTime;
-      if (elapsed < 2000) {
-        await new Promise(resolve => setTimeout(resolve, 2000 - elapsed));
-      }
-
+      await ensureDelay();
       setExtractedData(result.data);
     } catch (error) {
+      await ensureDelay();
       const message =
         error instanceof Error
           ? error.message
