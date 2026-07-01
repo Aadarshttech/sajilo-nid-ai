@@ -131,14 +131,14 @@ export default function UploadPage() {
         </div>
 
         {/* Upload Section (Step 0) */}
-        {currentStep === 0 && !isExtracting && !extractionError && (
+        {currentStep === 0 && !extractionError && (
           <div className="upload-section fade-in">
             <div className="upload-grid">
               <div className="upload-box">
                 {frontPreview ? (
                   <div className="upload-preview-container">
                     <img src={frontPreview} alt="Front side" className="upload-preview-img" />
-                    <button className="btn btn--outline btn--sm btn--full" onClick={() => { setFrontFile(null); setFrontPreview(null); }}>Remove</button>
+                    <button className="btn btn--outline btn--sm btn--full" disabled={isExtracting} onClick={() => { setFrontFile(null); setFrontPreview(null); }}>Remove</button>
                   </div>
                 ) : (
                   <DropZone
@@ -153,7 +153,7 @@ export default function UploadPage() {
                 {backPreview ? (
                   <div className="upload-preview-container">
                     <img src={backPreview} alt="Back side" className="upload-preview-img" />
-                    <button className="btn btn--outline btn--sm btn--full" onClick={() => { setBackFile(null); setBackPreview(null); }}>Remove</button>
+                    <button className="btn btn--outline btn--sm btn--full" disabled={isExtracting} onClick={() => { setBackFile(null); setBackPreview(null); }}>Remove</button>
                   </div>
                 ) : (
                   <DropZone
@@ -169,29 +169,14 @@ export default function UploadPage() {
             <div className="upload-action">
               <button
                 className="btn btn--primary btn--lg"
-                disabled={!canExtract}
+                disabled={!canExtract || isExtracting}
                 onClick={handleExtract}
               >
-                Extract Data with AI ✨
+                {isExtracting ? "Extracting... Please wait" : "Extract Data with AI ✨"}
               </button>
               {!canExtract && (
                 <p className="upload-action__hint">Please upload both sides to continue.</p>
               )}
-            </div>
-          </div>
-        )}
-
-        {/* Loading State */}
-        {isExtracting && (
-          <div className="loading-section fade-in">
-            <div className="loading-status">
-              <div className="loading-spinner" />
-              <p className="loading-status__text">
-                📄 Reading your citizenship certificate…
-              </p>
-              <p className="loading-status__subtext">
-                नागरिकता प्रमाणपत्र पढ्दै…
-              </p>
             </div>
           </div>
         )}
