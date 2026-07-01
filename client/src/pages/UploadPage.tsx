@@ -90,11 +90,12 @@ export default function UploadPage() {
       {/* Hero Header */}
       <header className="upload-header">
         <div className="upload-header__flag">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 116 142" height="48" style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.1))" }}>
-            <path fill="#003893" d="M115.6 141.6L0 141.6V0l110.5 73.1H37.8l77.8 68.5z"/>
-            <path fill="#dc143c" d="M106.8 135.5L7.2 135.5V11l95.5 63.2H32.4l74.4 61.3z"/>
-            <path fill="#fff" d="M42.5 45.4c-9.7 0-17.6 7.9-17.6 17.6h35.2c0-9.7-7.9-17.6-17.6-17.6zm0 2.2c8.5 0 15.4 6.9 15.4 15.4H27.1c0-8.5 6.9-15.4 15.4-15.4zM32.8 103c0-5.3 4.3-9.7 9.7-9.7s9.7 4.3 9.7 9.7-4.3 9.7-9.7 9.7-9.7-4.3-9.7-9.7zm2.2 0c0 4.1 3.4 7.5 7.5 7.5s7.5-3.4 7.5-7.5-3.4-7.5-7.5-7.5-7.5 3.4-7.5 7.5z"/>
-          </svg>
+          <img 
+            src="/nepal-flag.svg" 
+            alt="Nepal Flag" 
+            height="48" 
+            style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.15))", display: "block" }} 
+          />
         </div>
         <h1 className="upload-header__title">
           <span className="upload-header__title--np">स्मार्ट दर्ता</span>
