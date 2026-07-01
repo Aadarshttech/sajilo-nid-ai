@@ -93,8 +93,7 @@ export default function UploadPage() {
           <img 
             src="/nepal-flag.svg" 
             alt="Nepal Flag" 
-            height="32" 
-            style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.15))", display: "inline-block" }} 
+            style={{ height: "40px", width: "auto", filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.15))", display: "inline-block" }} 
           />
         </div>
         <h1 className="upload-header__title">
