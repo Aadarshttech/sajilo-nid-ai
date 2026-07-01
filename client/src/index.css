@@ -408,6 +408,11 @@ body::before {
   to { transform: rotate(360deg); }
 }
 
+@keyframes progressPulse {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(350%); }
+}
+
 .loading-status__text {
   font-size: 1.1rem;
   font-weight: 600;
