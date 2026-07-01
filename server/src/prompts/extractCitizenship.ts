@@ -8,15 +8,18 @@
 export const EXTRACT_CITIZENSHIP_PROMPT = `You are an OCR specialist for Nepali government documents. The user has uploaded TWO photos of a Nepali Citizenship Certificate (नागरिकता प्रमाणपत्र) — the front side (Nepali) and the back side (English). Extract every visible field.
 
 Rules:
-- The document may be entirely in Devanagari or bilingual (Devanagari + English).
-- Return ONLY a valid JSON object matching the schema below. No markdown, no commentary, no code fences. Just the raw JSON.
-- For dates shown in Bikram Sambat (e.g. "२०५५-०४-१५" or "2055-04-15"), convert to AD using exact calendar arithmetic and populate both dobBS and dobAD.
-- Transcribe Nepali names in the "nepali" field using Unicode Devanagari exactly as printed; romanise them for the "english" field using standard transliteration.
-- If a field is not visible or legible, leave it as empty string "".
-- Gender: infer from context if not explicit (पुरुष → MALE, महिला → FEMALE).
-- Set confidence between 0 and 1 reflecting overall legibility of the document.
-- For permanent address, extract the district (जिल्ला), local level (गाउँपालिका/नगरपालिका), and ward number (वडा नं.) separately.
-- Convert Devanagari numerals (०१२३४५६७८९) to Arabic numerals (0123456789) in all numeric fields.
+- The document has a Nepali front side and an English back side.
+- Return ONLY a valid JSON object matching the schema below.
+- ALL Devanagari numerals (०१२३४५६७८९) MUST be converted to Arabic numerals (0123456789).
+- **Citizenship No** (ना.प्र.नं.): Extract exact number (e.g. "27-01-79-05842").
+- **Name**: Extract "नाम थर" (Nepali) and "Full Name" (English). Split into firstName, middleName (if any), and lastName.
+- **DOB**: Extract "जन्म मिति" (BS) as YYYY-MM-DD (e.g. "2062-06-22"). Extract "Date of Birth (AD)" as YYYY-MM-DD (e.g. "2005-10-08"). If AD is missing, convert BS to AD.
+- **Gender**: Map "लिङ्ग" (पुरुष -> MALE, महिला -> FEMALE).
+- **Birth Place**: Combine "जन्म स्थान" details (District, RM/Municipality, Ward).
+- **Permanent Address**: Extract "स्थायी बासस्थान" details into exact fields: district (जिल्ला), localLevel (गा.पा./न.पा.), and wardNo (वडा नं.).
+- **Parents**: Extract "बाबुको नाम थर" (Father) and "आमाको नाम थर" (Mother). Transliterate to English if English version is missing on the back.
+- **Issuing Details**: Extract District from the top header (e.g. "जिल्ला प्रशासन कार्यालय काठमाडौँ" -> Kathmandu). Extract Issue Date (जारी मिति) as YYYY-MM-DD. Extract Issuing Authority Name (प्रमाण पत्र जारी गर्ने अधिकारीको नाम थर).
+- If a field is blank/missing (e.g., grandfather name), leave as empty string "".
 
 Required JSON schema (all values must be strings except confidence which is a number):
 {
